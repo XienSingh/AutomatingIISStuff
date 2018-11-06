@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -20,7 +21,7 @@ namespace AutomateIIS
 			var Path = @"PATH TO CREATE LOCATION";
 			var iisManager = new ServerManager();
 			var RemoveSite = false;
-
+		  ConfirmDir(Path);
 			RemoveIISWebsite(Name, RemoveSite);
 			Console.WriteLine("Removed site if true");
 			Site site = iisManager.Sites.Add(Name, Proto, Binding, Path);
@@ -29,12 +30,20 @@ namespace AutomateIIS
 			AddAppPool(site, Path);
 			Console.WriteLine("Added AppPool For Site");
 			AddBindings(site, BindingAdd, Proto);
-
 			Console.WriteLine("Site : " + Name + " Created");
-
 			Console.ReadLine();
 		}
 
+
+		public static bool ConfirmDir(string Path)
+		{
+			var exists = System.IO.Directory.Exists(Path);
+
+			if (!exists)
+				System.IO.Directory.CreateDirectory(Path);
+
+			return exists;
+		}
 		public static void AddAppPool(Site siteobj, string Path)
 		{
 			ServerManager serverManager = new ServerManager();
