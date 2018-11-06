@@ -13,11 +13,11 @@ namespace AutomateIIS
 	{
 		static void Main(string[] args)
 		{
-			var Name = "Gateway - Keegan";
+			var Name = "SITE NAME";
 			var Proto = "http";
-			var Binding = "*:80:keegan.p4.qa.ix.co.za";
+			var Binding = "*:80:URL/BINDINGS";
 			var BindingAdd = "*:80:";
-			var Path = @"E:\iX-Websites\Gateway - Keegan";
+			var Path = @"PATH TO CREATE LOCATION";
 			var iisManager = new ServerManager();
 			var RemoveSite = false;
 
@@ -28,7 +28,7 @@ namespace AutomateIIS
 			iisManager.CommitChanges();
 			AddAppPool(site, Path);
 			Console.WriteLine("Added AppPool For Site");
-			//AddBindings(site, BindingAdd, Proto);
+			AddBindings(site, BindingAdd, Proto);
 
 			Console.WriteLine("Site : " + Name + " Created");
 
