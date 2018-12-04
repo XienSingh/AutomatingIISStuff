@@ -21,7 +21,7 @@ namespace AutomateIIS
 			var Binding = "*:80:TestUrl.co.za";
 			var BindingAddProto = "HTTPS";
 			var BindingToAdd = "Test.co.za";
-			var Path = @"DirToSite"
+			var Path = @"DirToSite";
 			var RemoveSite = true;
 			CoreIISFeatures cis = new CoreIISFeatures();
 			var sites = cis.GetAllSites();

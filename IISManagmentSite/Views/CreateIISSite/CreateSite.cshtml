@@ -1,0 +1,79 @@
+﻿@model IISManagmentSite.Models.IISSiteModel
+
+@{
+	ViewBag.Title = "CreateSite";
+}
+
+<h2>CreateSite</h2>
+
+
+<form>
+	<div class="form-horizontal">
+		<h4>IISSiteModel</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.PathToSite, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PathToSite, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.PathToSite, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Bindings, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Bindings, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Bindings, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Proto, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Proto, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Proto, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="button" value="Create" class="btn btn-default CreateSiteBtn" onclick="CreateSite();" />
+			</div>
+		</div>
+	</div>
+</form>
+
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+	<script>
+
+		function CreateSite() {
+
+			var url = '/CreateIISSite/CreateSite';
+			var formData = $('form').serialize();
+			$('.CreateSiteBtn').addClass("disabled");
+			$.post(url, formData, function (data) {
+				alert(data);
+			}).fail(function (data) {
+				alert(data);
+			}).always(function () {
+				$('.CreateSiteBtn').removeClass("disabled");
+			});
+		}
+
+
+	</script>
+}
