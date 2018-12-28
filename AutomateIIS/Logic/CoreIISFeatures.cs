@@ -1,24 +1,59 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using AutomateIIS.Model;
 using Microsoft.Web.Administration;
 using Site = Microsoft.Web.Administration.Site;
 
 namespace AutomateIIS.Logic
 {
-	public class CoreIISFeatures
+	public class CoreIISFeatures 
 	{
-		public IEnumerable<Site> GetAllSites()
-		{
-			ServerManager iisManager = new ServerManager();
-			SiteCollection sites = iisManager.Sites;
 
-			return sites;
+		public List<IISSiteModel> GetIISSite()
+
+		{
+
+			List<IISSiteModel> iisSiteList = new List<IISSiteModel>();
+
+			ServerManager serverMgr = new ServerManager();
+
+			SiteCollection sitecollection = serverMgr.Sites;
+
+			foreach (var site in sitecollection)
+			{
+				var BindingInfo = "";
+				if (site.Bindings.Count() > 0)
+				{
+					var index = 0;
+					foreach (var Site in site.Bindings)
+					{
+						BindingInfo += Site.Protocol + "://" + site.Bindings[index].Host + " | ";
+						index++;
+					};
+				}
+				IISSiteModel issObject = new IISSiteModel()
+				{
+					SiteName = site.Name,
+					State = "1",
+					Bindings = BindingInfo
+				};
+
+				iisSiteList.Add(issObject);
+
+			}
+
+
+
+			return iisSiteList;
+
 		}
+
 		public static bool ConfirmDir(string Path)
 		{
 			var exists = System.IO.Directory.Exists(Path);
@@ -102,7 +137,7 @@ namespace AutomateIIS.Logic
 			return "Binding added: " + binding["bindingInformation"].ToString();
 		}
 
-		
+
 		public static void RemoveIISWebsite(string sitename, bool RemoveSite, int SiteId = 0)
 		{
 
@@ -138,6 +173,29 @@ namespace AutomateIIS.Logic
 				AppPoolColl.Remove(AppPool);
 				iisManager.CommitChanges();
 			}
+		}
+
+		public static string RemoveBinding(string hostname, string sitename)
+		{
+			ServerManager serverManager = new ServerManager();
+			Site site = serverManager.Sites[sitename];
+			if(site.Bindings.Count > 1) { 
+			for (int i = 0; i < site.Bindings.Count; i++)
+			{
+				if (site.Bindings[i].Host.ToLower() == hostname.Trim())
+				{
+					site.Bindings.RemoveAt(i);
+					serverManager.CommitChanges();
+					break;
+				}
+			}
+			}
+			else
+			{
+				return "Cannot Delete Binding as it is the last one";
+			}
+			return $"Deleted Binding : {hostname}";
+
 		}
 
 	}

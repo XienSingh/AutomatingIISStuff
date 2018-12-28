@@ -1,0 +1,93 @@
+﻿@{
+	ViewBag.Title = "ListAllSites";
+}
+
+<h2>ListAllSites</h2>
+
+
+@foreach (var x in ViewBag.SiteList)
+{
+	<p>@x.SiteName <span class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="AddNewBinding('@x.SiteName')">Add New Binding</span></p>
+
+
+	string[] times = (x.Bindings).Split('|');
+	foreach (var z in times)
+	{
+		if (z != " ")
+		{
+			<div>		
+			@Html.Raw($"<a href='{z}'>{z}</a><a data-val='' class='IndexAble btn btn-warning' onclick='RemoveUrl(\"{x.SiteName}\",\"{z.ToLower()}\")'>RemoveDomain</a>")
+			</div>
+		}
+	}
+
+
+}
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Modal Header</h4>
+			</div>
+			<div class="modal-body">
+				<div>
+					<input type="text" id="Site" name="Site" value="" placeholder="Site Name" disabled />
+				</div>
+				<div>
+					<input type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
+				</div>
+				<div>
+					<input type="text" id="Proto" name="Proto" value="" placeholder="Protocol" />
+				</div>
+				<div><span class="btn btn-success" onclick="AddNewBindingInfo();">Add New Binding</span></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+@section Scripts {
+	<script>
+		$(function () { IndexMe() });
+		var index = 0;
+		function IndexMe() {
+			$('.IndexAble').each(function () { $(this).attr("data-val", index) });
+			index++;
+		}
+		function RemoveUrl(SiteName, Bindings) {
+			//var x = $(e).data("val");
+			//alert(x)
+			var url = '/ManageSites/DeleteBindings';
+			var formData = { 'hostname': Bindings.replace("http://", ""), 'sitename': SiteName };
+			$.post(url, formData, function (data) {
+				alert(data);
+			}).fail(function (data) {
+				alert(data);
+			}).always(function () {
+				$('.CreateSiteBtn').removeClass("disabled");
+			});
+		}
+		function AddNewBinding(SiteName) {
+			$("#Site").val(SiteName);
+		}
+		function AddNewBindingInfo() {
+			var url = '/ManageSites/AddBindings';
+			var formData = { 'siteToAddBinding': $("#Site").val(), 'BindingToAdd': $("#Binding").val(), 'Proto': $("#Proto").val() };
+			$.post(url, formData, function (data) {
+				alert(data);
+			}).fail(function (data) {
+				alert(data);
+			}).always(function () {
+				$('.CreateSiteBtn').removeClass("disabled");
+			});
+		}
+	</script>
+}
+

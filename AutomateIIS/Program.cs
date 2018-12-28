@@ -24,12 +24,12 @@ namespace AutomateIIS
 			var Path = @"DirToSite";
 			var RemoveSite = true;
 			CoreIISFeatures cis = new CoreIISFeatures();
-			var sites = cis.GetAllSites();
-			foreach(Site site in sites)
-			{
-				Console.WriteLine("Site Id : "+site.Id + " Site Name : " + site.Name);
+			//var sites = cis.GetIISSite();
+			//foreach(Site site in sites)
+			//{
+			//	Console.WriteLine("Site Id : "+site.Id + " Site Name : " + site.Name);
 
-			}
+			//}
 
 			CoreIISFeatures.RemoveIISWebsite(Name, RemoveSite);
 
