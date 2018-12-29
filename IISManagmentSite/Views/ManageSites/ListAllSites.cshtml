@@ -2,27 +2,44 @@
 	ViewBag.Title = "ListAllSites";
 }
 
-<h2>ListAllSites</h2>
+<h2>Manage Sites</h2>
+<table class="table table-responsive">
+	<thead>
+		<tr>
+			<td>Site</td>
+			<td>Binding Info</td>
+		</tr>
+	</thead>
 
-
-@foreach (var x in ViewBag.SiteList)
-{
-	<p>@x.SiteName <span class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="AddNewBinding('@x.SiteName')">Add New Binding</span></p>
-
-
-	string[] times = (x.Bindings).Split('|');
-	foreach (var z in times)
-	{
-		if (z != " ")
+	<tbody>
+		@foreach (var x in ViewBag.SiteList)
 		{
-			<div>		
-			@Html.Raw($"<a href='{z}'>{z}</a><a data-val='' class='IndexAble btn btn-warning' onclick='RemoveUrl(\"{x.SiteName}\",\"{z.ToLower()}\")'>RemoveDomain</a>")
-			</div>
+			<tr>
+				<td>
+					<span class="SiteName">@x.SiteName</span> <span title="Add New Binding" class='glyphicon glyphicon-plus AddBinding' data-toggle='modal' data-target='#myModal' onclick='AddNewBinding("@x.SiteName.Trim()")'></span>
+
+				</td>
+
+				<td>
+					@{
+						string[] times = (x.Bindings).Split('|');
+						foreach (var z in times)
+						{
+							if (z != " ")
+							{
+
+								@Html.Raw($"<a href='{z}'>{z}</a><span title='Delete Binding : {z}' data-val='' class='IndexAble glyphicon glyphicon-trash' onclick='RemoveUrl(\"{x.SiteName}\",\"{z.ToLower()}\")'></span><br/>")
+
+							}
+						}
+					}
+				</td>
+			</tr>
+
 		}
-	}
+	</tbody>
+</table>
 
-
-}
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 

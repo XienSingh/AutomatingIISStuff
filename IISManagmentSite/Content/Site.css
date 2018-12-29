@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+span.SiteName { margin-right: 10px; }
+span.glyphicon.glyphicon-plus.AddBinding { color: #00ff1f; }
+span.IndexAble.glyphicon.glyphicon-trash { color: #f00; margin: 5px 12px; }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { vertical-align: middle; }

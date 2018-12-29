@@ -14,7 +14,7 @@ namespace IISManagmentSite.Controllers
 		// GET: ManageSites
 		public ActionResult Index()
 		{
-			return View();
+			return RedirectToAction("ListAllSites");
 		}
 
 		public ActionResult ListAllSites()

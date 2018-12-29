@@ -13,7 +13,7 @@ namespace IISManagmentSite.Controllers
 		// GET: CreateIISSite
 		public ActionResult Index()
 		{
-			return View();
+			return RedirectToAction("CreateSite");
 		}
 		public ActionResult CreateSite()
 		{
