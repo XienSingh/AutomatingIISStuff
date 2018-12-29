@@ -1,5 +1,5 @@
 ﻿@{
-	ViewBag.Title = "ListAllSites";
+	ViewBag.Title = "Manage Sites On IIS";
 }
 
 <h2>Manage Sites</h2>
@@ -10,16 +10,13 @@
 			<td>Binding Info</td>
 		</tr>
 	</thead>
-
 	<tbody>
 		@foreach (var x in ViewBag.SiteList)
 		{
 			<tr>
 				<td>
 					<span class="SiteName">@x.SiteName</span> <span title="Add New Binding" class='glyphicon glyphicon-plus AddBinding' data-toggle='modal' data-target='#myModal' onclick='AddNewBinding("@x.SiteName.Trim()")'></span>
-
 				</td>
-
 				<td>
 					@{
 						string[] times = (x.Bindings).Split('|');
@@ -27,9 +24,7 @@
 						{
 							if (z != " ")
 							{
-
-								@Html.Raw($"<a href='{z}'>{z}</a><span title='Delete Binding : {z}' data-val='' class='IndexAble glyphicon glyphicon-trash' onclick='RemoveUrl(\"{x.SiteName}\",\"{z.ToLower()}\")'></span><br/>")
-
+								<a href='@z'>@z</a><span title='Delete Binding : @z' data-val='' class='IndexAble glyphicon glyphicon-trash' onclick='RemoveUrl("@x.SiteName","@z.ToLower()")'></span><br/>
 							}
 						}
 					}
@@ -40,29 +35,35 @@
 	</tbody>
 </table>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div aria-hidden="true" id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-
-		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Modal Header</h4>
 			</div>
 			<div class="modal-body">
-				<div>
-					<input type="text" id="Site" name="Site" value="" placeholder="Site Name" disabled />
+				<div class="form-horizontal">
+					<div class="form-group">
+						<div class="col-md-10">
+							<input class="form-control" type="text" id="Site" name="Site" value="" placeholder="Site Name" disabled />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-10">
+							<input class="form-control" type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-10">
+							<input class="form-control" type="text" id="Proto" name="Proto" value="" placeholder="Protocol" />
+						</div>
+					</div>
 				</div>
-				<div>
-					<input type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
-				</div>
-				<div>
-					<input type="text" id="Proto" name="Proto" value="" placeholder="Protocol" />
-				</div>
-				<div><span class="btn btn-success" onclick="AddNewBindingInfo();">Add New Binding</span></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<span class="btn btn-success" onclick="AddNewBindingInfo();">Add New Binding</span>
+				<button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 
@@ -79,8 +80,6 @@
 			index++;
 		}
 		function RemoveUrl(SiteName, Bindings) {
-			//var x = $(e).data("val");
-			//alert(x)
 			var url = '/ManageSites/DeleteBindings';
 			var formData = { 'hostname': Bindings.replace("http://", ""), 'sitename': SiteName };
 			$.post(url, formData, function (data) {
@@ -98,11 +97,12 @@
 			var url = '/ManageSites/AddBindings';
 			var formData = { 'siteToAddBinding': $("#Site").val(), 'BindingToAdd': $("#Binding").val(), 'Proto': $("#Proto").val() };
 			$.post(url, formData, function (data) {
+				$('.closeModal').trigger('click');
 				alert(data);
 			}).fail(function (data) {
 				alert(data);
 			}).always(function () {
-				$('.CreateSiteBtn').removeClass("disabled");
+
 			});
 		}
 	</script>
