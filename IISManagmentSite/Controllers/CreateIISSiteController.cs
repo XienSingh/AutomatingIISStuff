@@ -23,7 +23,6 @@ namespace IISManagmentSite.Controllers
 		[HttpPost]
 		public JsonResult CreateSite(IISSiteModel iISSite)
 		{
-			var Site = new CoreIISFeatures();
 			var CreateSite = CoreIISFeatures.CreateSite(iISSite.SiteName, iISSite.Proto, iISSite.Bindings, iISSite.PathToSite);
 			return Json(CreateSite);
 		}
