@@ -15,7 +15,7 @@
 		{
 			<tr>
 				<td>
-					<span class="SiteName">@x.SiteName</span> <span title="Add New Binding" class='glyphicon glyphicon-plus AddBinding' data-toggle='modal' data-target='#myModal' onclick='AddNewBinding("@x.SiteName.Trim()")'></span>
+					<span class="SiteName">@x.SiteName</span> <span title="Add New Binding" class='glyphicon glyphicon-plus AddBinding' data-toggle='modal' data-target='#myModal' onclick='AddNewBinding(@x.SiteID,"@x.SiteName.Trim()")'></span>
 				</td>
 				<td>
 					@{
@@ -43,26 +43,31 @@
 				<h4 class="modal-title">Modal Header</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-horizontal">
-					<div class="form-group">
-						<div class="col-md-10">
-							<input class="form-control" type="text" id="Site" name="Site" value="" placeholder="Site Name" disabled />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-10">
-							<input class="form-control" type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-10">
-							<input class="form-control" type="text" id="Proto" name="Proto" value="" placeholder="Protocol" />
-						</div>
-					</div>
-				</div>
+                <div class="form-horizontal">
+                    <div style="display:none;" class="form-group">
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="SiteID" name="SiteID" value="" placeholder="Site ID" hidden disabled />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="Site" name="Site" value="" placeholder="Site Name" disabled />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="Proto" name="Proto" value="" placeholder="Protocol" />
+                        </div>
+                    </div>
+                </div>
 			</div>
 			<div class="modal-footer">
-				<span class="btn btn-success" onclick="AddNewBindingInfo();">Add New Binding</span>
+				<span class="btn btn-success" onclick="AddNewSSLBindingInfo();">Add New Binding</span>
 				<button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -90,10 +95,16 @@
 				$('.CreateSiteBtn').removeClass("disabled");
 			});
 		}
-		function AddNewBinding(SiteName) {
+		function AddNewBinding(SiteID,SiteName) {
 			$("#Site").val(SiteName);
+            $("#SiteID").val(SiteID);
 		}
-		function AddNewBindingInfo() {
+        function AddNewBindingInfo() {
+            if ($("#Proto").val() == "https") {
+
+                AddNewSSLBindingInfo()
+            } else {
+     
 			var url = '/ManageSites/AddBindings';
 			var formData = { 'siteToAddBinding': $("#Site").val(), 'BindingToAdd': $("#Binding").val(), 'Proto': $("#Proto").val() };
 			$.post(url, formData, function (data) {
@@ -103,8 +114,21 @@
 				alert(data);
 			}).always(function () {
 
-			});
-		}
+                    });
+            }
+        }
+        function AddNewSSLBindingInfo() {
+            var url = '/ManageSites/AddSSLBindings';
+            var formData = { "SiteID": $("#SiteID").val(),'BindingToAdd': $("#Binding").val() };
+            $.post(url, formData, function (data) {
+                $('.closeModal').trigger('click');
+                alert(data);
+            }).fail(function (data) {
+                alert(data);
+            }).always(function () {
+
+            });
+        }
 	</script>
 }
 

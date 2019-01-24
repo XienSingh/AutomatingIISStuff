@@ -41,7 +41,8 @@ namespace AutomateIIS.Logic
 				{
 					SiteName = site.Name,
 					State = "1",
-					Bindings = BindingInfo
+					Bindings = BindingInfo,
+                    SiteID = site.Id
 				};
 
 				iisSiteList.Add(issObject);
@@ -136,7 +137,24 @@ namespace AutomateIIS.Logic
 			iisManager.CommitChanges();
 			return "Binding added: " + binding["bindingInformation"].ToString();
 		}
+         public static string AddSSLCertAndBindings(int SiteID,string[] Bindings)
+        {
 
+            try
+            {
+
+
+                LaunchCLI.LaunchCommandLineApp(SiteID,Bindings);
+               
+
+                return "Added Cert";
+            }
+            catch
+            {
+                return "Failed";
+            }
+
+        }
 
 		public static void RemoveIISWebsite(string sitename, bool RemoveSite, int SiteId = 0)
 		{

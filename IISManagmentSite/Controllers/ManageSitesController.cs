@@ -30,7 +30,12 @@ namespace IISManagmentSite.Controllers
 			var AddBindingToSite = CoreIISFeatures.AddBindings(siteToAddBinding,BindingToAdd,Proto);
 			return Json(AddBindingToSite);
 		}
-		public JsonResult DeleteBindings(string hostname, string sitename)
+        public JsonResult AddSSLBindings(int SiteID ,string[] BindingToAdd)
+        {
+            var AddSSLBindingToSite = CoreIISFeatures.AddSSLCertAndBindings(SiteID,BindingToAdd);
+            return Json(AddSSLBindingToSite);
+        }
+        public JsonResult DeleteBindings(string hostname, string sitename)
 		{
 		
 			var DeleteSiteBinding = CoreIISFeatures.RemoveBinding(hostname,sitename);

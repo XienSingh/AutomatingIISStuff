@@ -10,6 +10,7 @@ namespace AutomateIIS.Model
 		public string SiteName { get; set; }
 		public string State { get; set; }
 		public string Bindings { get; set; }
+        public long SiteID { get;set;}
 
 	}
 }
