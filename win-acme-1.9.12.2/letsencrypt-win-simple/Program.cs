@@ -26,9 +26,10 @@ namespace PKISharp.WACS
         private static int? siteID = null;
         private static string BindingsToAdd;
         private static bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-
-        private static void Main(string[] args)
+        private static int StateMsg = 0;
+        private static int Main(string[] args)
         {
+            
             _container = AutofacBuilder.Global(args);
             SiteOptions = args[0];
             siteID   = int.Parse(args[1]);
@@ -37,14 +38,14 @@ namespace PKISharp.WACS
             _log = _container.Resolve<ILogService>();
             _optionsService = _container.Resolve<IOptionsService>();
             _options = _optionsService.Options;
-            if (_options == null) return;
+            if (_options == null) return 0;
             _input = _container.Resolve<IInputService>();
 
             // .NET Framework check
             var dn = _container.Resolve<DotNetVersionService>();
             if (!dn.Check())
             {
-                return;
+                return 0;
             }
 
             // Show version information
@@ -85,6 +86,7 @@ namespace PKISharp.WACS
                 catch (Exception ex)
                 {
                     HandleException(ex);
+                    StateMsg = 2; 
                 }
                 if (!_options.CloseOnFinish)
                 {
@@ -94,6 +96,7 @@ namespace PKISharp.WACS
                     Environment.ExitCode = 0;
                 }
             } while (!_options.CloseOnFinish);
+            return StateMsg;
         }
 
         /// <summary>
@@ -221,6 +224,7 @@ namespace PKISharp.WACS
                 var targetPluginFactory = scope.Resolve<ITargetPluginFactory>(new NamedParameter("_Name", "IISSitesFactory"));
                 if (targetPluginFactory is INull)
                 {
+                    
                     return; // User cancelled or unable to resolve
                 }
 
@@ -252,6 +256,7 @@ namespace PKISharp.WACS
                 }
                 else if (!validationPluginFactory.CanValidate(target))
                 {
+                    StateMsg = 2;
                     // Might happen in unattended mode
                     _log.Error("Validation plugin {name} is unable to validate target", validationPluginFactory.Name);
                     return;
@@ -272,6 +277,7 @@ namespace PKISharp.WACS
                 }
                 catch (Exception ex)
                 {
+                    StateMsg = 2;
                     _log.Error(ex, "Invalid validation input");
                     return;
                 }
@@ -300,6 +306,7 @@ namespace PKISharp.WACS
                 }
                 catch (Exception ex)
                 {
+                    StateMsg = 2;
                     _log.Error(ex, "Invalid installation input");
                     return;
                 }
@@ -308,10 +315,12 @@ namespace PKISharp.WACS
                 var result = Renew(scope, renewal);
                 if (!result.Success)
                 {
+                     StateMsg = 2;
                     _log.Error("Create certificate failed");
                 }
                 else
                 {
+                    StateMsg = 1;
                     _renewalService.Save(renewal, result);
                 }
             }

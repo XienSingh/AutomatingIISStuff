@@ -55,9 +55,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-10">
-                            <input class="form-control" type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
+                        <div class="col-md-10 addBindingListHere">
+                            <input class="form-control bindingta" type="text" id="Binding" name="Binding To Add" value="" placeholder="Binding to add" />
+
                         </div>
+                        <span style=" margin-left: 14px; " onclick="AddNewBindingInput()" id="add" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Add binding</span>
                     </div>
                     <div class="form-group">
                         <div class="col-md-10">
@@ -67,7 +69,7 @@
                 </div>
 			</div>
 			<div class="modal-footer">
-				<span class="btn btn-success" onclick="AddNewSSLBindingInfo();">Add New Binding</span>
+				<span class="btn btn-success" id="WaitME" onclick="AddNewBindingInfo();">Add New Binding</span>
 				<button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -78,6 +80,7 @@
 
 @section Scripts {
 	<script>
+        var counter = 0;
 		$(function () { IndexMe() });
 		var index = 0;
 		function IndexMe() {
@@ -95,39 +98,59 @@
 				$('.CreateSiteBtn').removeClass("disabled");
 			});
 		}
-		function AddNewBinding(SiteID,SiteName) {
-			$("#Site").val(SiteName);
+        function AddNewBinding(SiteID, SiteName) {
+            $("#Site").val(SiteName);
             $("#SiteID").val(SiteID);
 		}
         function AddNewBindingInfo() {
-            if ($("#Proto").val() == "https") {
+            $("#WaitME").addClass("disabled");
+
+            if ($("#Proto").val().toLowerCase() == "https") {
 
                 AddNewSSLBindingInfo()
             } else {
      
-			var url = '/ManageSites/AddBindings';
-			var formData = { 'siteToAddBinding': $("#Site").val(), 'BindingToAdd': $("#Binding").val(), 'Proto': $("#Proto").val() };
+                var url = '/ManageSites/AddBindings';
+                var arr = new Array();
+                $('.bindingta').each(function () {
+                    arr.push(($(this).val()).toString());
+                });
+			var formData = { 'siteToAddBinding': $("#Site").val(), 'BindingToAdd': arr[0], 'Proto': $("#Proto").val() };
 			$.post(url, formData, function (data) {
 				$('.closeModal').trigger('click');
 				alert(data);
 			}).fail(function (data) {
 				alert(data);
 			}).always(function () {
-
+                $('#WaitME').removeClass("disabled");
                     });
             }
         }
         function AddNewSSLBindingInfo() {
             var url = '/ManageSites/AddSSLBindings';
-            var formData = { "SiteID": $("#SiteID").val(),'BindingToAdd': $("#Binding").val() };
+            var arr = new Array();
+            $('.bindingta').each(function () {
+                arr.push(($(this).val()).toString());
+            });
+            var formData = { "SiteID": $("#SiteID").val(), 'BindingToAdd': arr };
             $.post(url, formData, function (data) {
                 $('.closeModal').trigger('click');
                 alert(data);
             }).fail(function (data) {
                 alert(data);
             }).always(function () {
-
+                $('#WaitME').removeClass("disabled");
             });
+        }
+        //when the Add Field button is clicked
+        function AddNewBindingInput() {
+
+            $(".addBindingListHere").append('<input class="form-control bindingta BindingsToAdd_' + counter + '" type="text" id="Binding" name="Binding To Add"  value="" placeholder="Binding to add" /><span style=" float: right; width: 170px; top: -28px; color: #f00; position: relative; " onclick="RemoveBindingInput(\'.BindingsToAdd_' + counter + '\',\'#removeInput_' + counter + '\')" id="removeInput_' + counter + '" class=""><i class="glyphicon glyphicon-remove-circle"></i></span>');
+            counter++;
+        }
+        function RemoveBindingInput(selector, selector2) {
+            $(selector).remove();
+            $(selector2).remove();
         }
 	</script>
 }
