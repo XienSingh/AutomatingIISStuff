@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using IISManagmentSite.Models;
+using IISManagementSite.Models;
 using AutomateIIS.Logic;
 
-namespace IISManagmentSite.Controllers
+namespace IISManagementSite.Controllers
 {
-	public class CreateIISSiteController : Controller
+    public class CreateIISSiteController : Controller
 	{
 		// GET: CreateIISSite
 		public ActionResult Index()

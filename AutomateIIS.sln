@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomateIIS", "AutomateIIS\AutomateIIS.csproj", "{B0A35B26-4068-4B39-BCE1-76D92664E9FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IISManagmentSite", "IISManagmentSite\IISManagmentSite.csproj", "{47963C2A-6D37-4022-98DD-1579D62F06E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IISManagementSite", "IISManagmentSite\IISManagementSite.csproj", "{47963C2A-6D37-4022-98DD-1579D62F06E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "win-acme", "win-acme-1.9.12.2\letsencrypt-win-simple\win-acme.csproj", "{30CC3DE8-AA52-4807-9B0D-EBA08B539918}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSLIssuerAPI", "SSLIssuerAPI\SSLIssuerAPI.csproj", "{460CF0D2-4491-454C-91DB-74D835FAE02B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{30CC3DE8-AA52-4807-9B0D-EBA08B539918}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30CC3DE8-AA52-4807-9B0D-EBA08B539918}.Release|x86.ActiveCfg = Release|x86
 		{30CC3DE8-AA52-4807-9B0D-EBA08B539918}.Release|x86.Build.0 = Release|x86
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Debug|x86.Build.0 = Debug|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Release|x86.ActiveCfg = Release|Any CPU
+		{460CF0D2-4491-454C-91DB-74D835FAE02B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

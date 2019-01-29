@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace IISManagmentSite
+namespace IISManagementSite
 {
 	public class BundleConfig
 	{

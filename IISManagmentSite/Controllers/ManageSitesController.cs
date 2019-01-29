@@ -7,9 +7,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace IISManagmentSite.Controllers
+namespace IISManagementSite.Controllers
 {
-	public class ManageSitesController : Controller
+    public class ManageSitesController : Controller
 	{
 		// GET: ManageSites
 		public ActionResult Index()

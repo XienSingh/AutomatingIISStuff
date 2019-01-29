@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace IISManagmentSite.Controllers
+namespace IISManagementSite.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : Controller
 	{
 		public ActionResult Index()
 		{
