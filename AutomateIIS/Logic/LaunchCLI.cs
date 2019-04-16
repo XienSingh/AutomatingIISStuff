@@ -18,7 +18,7 @@ namespace AutomateIIS.Logic
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.CreateNoWindow = false;
             startInfo.UseShellExecute = true;
-            startInfo.FileName = @"C:\Users\Xien\Source\Repos\AutomatingIISStuff\win-acme-1.9.12.2\letsencrypt-win-simple\bin\Debug\letsencrypt.exe";
+            startInfo.FileName = @"C:\SSL\letsencrypt.exe";
             startInfo.WindowStyle = ProcessWindowStyle.Hidden;
             startInfo.Verb = "runas";
             startInfo.Arguments = SSLType + " " + SiteIDforSSL.ToString() + " " + string.Join(",", bindings);
@@ -34,7 +34,7 @@ namespace AutomateIIS.Logic
                             return "No action taken";
 
                         case 1:
-                            return "Cert Added Successfully to : "+ string.Join(",", bindings); ;
+                            return "SSL Cert Added Successfully to : "+ string.Join(",", bindings); ;
 
                         case 2:
                             return "Exeption in adding Cert, Please contact the internal SSL Issuer";
